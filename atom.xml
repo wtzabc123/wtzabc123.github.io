@@ -3,11 +3,11 @@
   <title>lontano&quot;s Blog</title>
   
   <subtitle>奔赴山海，保持热爱</subtitle>
-  <link href="https://wtzabc123.github.io/atom.xml" rel="self"/>
+  <link href="https://wtzabc123.github.io/project/atom.xml" rel="self"/>
   
-  <link href="https://wtzabc123.github.io/"/>
+  <link href="https://wtzabc123.github.io/project/"/>
   <updated>2024-03-22T12:45:03.977Z</updated>
-  <id>https://wtzabc123.github.io/</id>
+  <id>https://wtzabc123.github.io/project/</id>
   
   <author>
     <name>lontano</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>测试文章</title>
-    <link href="https://wtzabc123.github.io/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
-    <id>https://wtzabc123.github.io/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</id>
+    <link href="https://wtzabc123.github.io/project/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
+    <id>https://wtzabc123.github.io/project/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</id>
     <published>2024-03-22T12:29:18.000Z</published>
     <updated>2024-03-22T12:45:03.977Z</updated>
     
@@ -27,7 +27,7 @@
       
       
     <summary type="html">&lt;p&gt;这是一篇测试文章&lt;/p&gt;
-&lt;img src=&quot;/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png&quot; class=&quot;&quot;&gt;
+&lt;img src=&quot;/project/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png&quot; class=&quot;&quot;&gt;
 
 </summary>
       
@@ -35,14 +35,14 @@
     
     
     
-    <category term="原创" scheme="https://wtzabc123.github.io/tags/%E5%8E%9F%E5%88%9B/"/>
+    <category term="原创" scheme="https://wtzabc123.github.io/project/tags/%E5%8E%9F%E5%88%9B/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="https://wtzabc123.github.io/2024/03/22/hello-world/"/>
-    <id>https://wtzabc123.github.io/2024/03/22/hello-world/</id>
+    <link href="https://wtzabc123.github.io/project/2024/03/22/hello-world/"/>
+    <id>https://wtzabc123.github.io/project/2024/03/22/hello-world/</id>
     <published>2024-03-22T12:08:41.191Z</published>
     <updated>2024-03-22T12:08:41.191Z</updated>
     
