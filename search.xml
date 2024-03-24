@@ -24,7 +24,7 @@
 <p>我们通过命令</p>
 <figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python2 vol<span class="selector-class">.py</span> -f Target<span class="selector-class">.vmem</span> <span class="attr">--profile</span> Win7SP1x64 lsadump</span><br></pre></td></tr></table></figure>
 
-
+<span id="more"></span>
 
 <blockquote>
 <p>lsadump 插件用于提取的LSA（本地安全权限）密钥信息包括几个敏感部分，如：</p>

@@ -6,7 +6,7 @@
   <link href="https://wtzabc123.github.io/atom.xml" rel="self"/>
   
   <link href="https://wtzabc123.github.io/"/>
-  <updated>2024-03-24T14:00:41.670Z</updated>
+  <updated>2024-03-24T14:02:53.108Z</updated>
   <id>https://wtzabc123.github.io/</id>
   
   <author>
@@ -21,14 +21,29 @@
     <link href="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
     <id>https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/</id>
     <published>2024-03-24T11:21:23.000Z</published>
-    <updated>2024-03-24T14:00:41.670Z</updated>
+    <updated>2024-03-24T14:02:53.108Z</updated>
     
     
-      
-      
     <summary type="html">&lt;p&gt;  我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题&lt;/p&gt;
-&lt;p&gt;volatility下载地址：&lt;a href=&quot;https://github.com/volatilityf</summary>
-      
+&lt;p&gt;volatility下载地址：&lt;a href=&quot;https://github.com/volatilityfoundation/volatility&quot;&gt;https://github.com/volatilityfoundation/volatility&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文使用的版本非volatility3版本，而是老版本，需要python2运行&lt;/p&gt;
+&lt;h4 id=&quot;例题：&quot;&gt;&lt;a href=&quot;#例题：&quot; class=&quot;headerlink&quot; title=&quot;例题：&quot;&gt;&lt;/a&gt;例题：&lt;/h4&gt;&lt;p&gt;选自 [陇剑杯 2021]内存分析：&lt;/p&gt;
+&lt;p&gt;1.网管小王制作了一个虚拟机文件，让您来分析后作答：&lt;br&gt; 虚拟机的密码是_____________。&lt;/p&gt;
+&lt;p&gt;首先，我们下载附件之后，看到压缩包里有一个vmem格式的文件&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/1.png&quot;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Tip:什么是VMEM格式的文件？&lt;/p&gt;
+&lt;p&gt;  VMEM格式的文件通常与虚拟机有关。VMEM文件是VMware虚拟机使用的分页或交换文件，用来备份主内存文件（以.VMX后缀的文件）中的数据，在虚拟机电源被关闭时使用。当虚拟机正在运行而主机的物理内存不足以支持它时，系统会将一部分虚拟机内存数据存储到VMEM文件中。 这个文件通过存储虚拟机的物理RAM内容，可以在虚拟机启动时提供状态恢复功能。如果您需要处理此类文件，通常是因为您正在管理虚拟机或者需要分析虚拟机的运行状态。 在某些情况下，如果虚拟机没有正常关闭，例如突然断电，VMEM文件就可以用来恢复虚拟机运行前的状态。然而，由于这些文件可能非常大，并且包含了大量的数据，所以通常不会被移动或编辑。 正常的虚拟机操作不需要用户直接与VMEM文件交互。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们这时就需要用到volatility工具分析这个vmem格式的文件，将其拖入kali linux 虚拟机中，我们可以使用&lt;/p&gt;
+&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;python2 vol&lt;span class=&quot;selector-class&quot;&gt;.py&lt;/span&gt; -f Target&lt;span class=&quot;selector-class&quot;&gt;.vmem&lt;/span&gt; imageinfo&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/2.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;来查看Target.vmem文件的镜像信息，这里的-f 指的是 file ，用于指定文件，imageinfo是查看镜像文件的信息，imageinfo在内存取证中一般都是经常使用的&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/3.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;这里的profile给出了一堆操作系统的名称，这是volatility工具预测的该我文件可能的操作系统版本，如果你能确定是哪个就选择哪个，否则可能需要挨个尝试，我们直接选择第一个尝试&lt;/p&gt;
+&lt;p&gt;我们通过命令&lt;/p&gt;
+&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;python2 vol&lt;span class=&quot;selector-class&quot;&gt;.py&lt;/span&gt; -f Target&lt;span class=&quot;selector-class&quot;&gt;.vmem&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;--profile&lt;/span&gt; Win7SP1x64 lsadump&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
     
     
     
