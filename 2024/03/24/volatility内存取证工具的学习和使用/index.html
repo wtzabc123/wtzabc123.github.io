@@ -22,26 +22,43 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"wtzabc123.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.19.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="心有所向，无问东西">
-<meta property="og:type" content="website">
-<meta property="og:title" content="lontano&#39;s Blog">
-<meta property="og:url" content="https://wtzabc123.github.io/index.html">
+    <meta name="description" content="我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题 volatility下载地址：https:&#x2F;&#x2F;github.com&#x2F;volatilityfoundation&#x2F;volatility 本文使用的版本非volatility3版本，而是老版本，需要python2运行 例题：选自 [陇剑杯 2021]内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatility内存取证工具的学习和使用">
+<meta property="og:url" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="lontano&#39;s Blog">
-<meta property="og:description" content="心有所向，无问东西">
+<meta property="og:description" content="我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题 volatility下载地址：https:&#x2F;&#x2F;github.com&#x2F;volatilityfoundation&#x2F;volatility 本文使用的版本非volatility3版本，而是老版本，需要python2运行 例题：选自 [陇剑杯 2021]内存">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/1.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/2.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/3.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/4.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/5.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/6.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/7.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/8.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/9.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/10.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/11.png">
+<meta property="og:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/12.png">
+<meta property="article:published_time" content="2024-03-24T11:21:23.000Z">
+<meta property="article:modified_time" content="2024-03-24T14:00:41.670Z">
 <meta property="article:author" content="lontano">
-<meta property="article:tag" content="编程，网络安全，计算机，CTF">
+<meta property="article:tag" content="内存取证">
+<meta property="article:tag" content="volatility">
+<meta property="article:tag" content="misc">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/1.png">
 
 
-<link rel="canonical" href="https://wtzabc123.github.io/">
+<link rel="canonical" href="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/","path":"2024/03/24/volatility内存取证工具的学习和使用/","title":"volatility内存取证工具的学习和使用"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>lontano's Blog</title>
+<title>volatility内存取证工具的学习和使用 | lontano's Blog</title>
   
 
 
@@ -75,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">lontano's Blog</h1>
+      <p class="site-title">lontano's Blog</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">奔赴山海，保持热爱</p>
@@ -129,7 +146,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -142,6 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">例题：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%8F%91%E7%8E%B0%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">新发现：</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -209,16 +227,17 @@
 
     </div>
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -232,13 +251,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | lontano's Blog">
+      <meta itemprop="name" content="volatility内存取证工具的学习和使用 | lontano's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">volatility内存取证工具的学习和使用</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          volatility内存取证工具的学习和使用
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -285,8 +304,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-          <p>  我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题</p>
+    <div class="post-body" itemprop="articleBody"><p>  我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题</p>
 <p>volatility下载地址：<a target="_blank" rel="noopener" href="https://github.com/volatilityfoundation/volatility">https://github.com/volatilityfoundation/volatility</a></p>
 <p>本文使用的版本非volatility3版本，而是老版本，需要python2运行</p>
 <h4 id="例题："><a href="#例题：" class="headerlink" title="例题："></a>例题：</h4><p>选自 [陇剑杯 2021]内存分析：</p>
@@ -403,7 +421,6 @@
 <p>要记住的关键是，解压tar文件的话，就添加<code>-x</code>参数；如果tar文件还经过了压缩，那么就根据压缩类型添加相应的参数（gzip是<code>-z</code>，bzip2是<code>-j</code>）。对于<code>.xz</code>使用<code>-J</code>，对于<code>.tar.zst</code>使用<code>--zstd</code>选项。 </p>
 </blockquote>
 
-      
     </div>
 
     
@@ -411,11 +428,53 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechat.jpg" alt="lontano 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/zhifubao.jpg" alt="lontano 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>lontano
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/" title="volatility内存取证工具的学习和使用">https://wtzabc123.github.io/2024/03/24/volatility内存取证工具的学习和使用/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81/" rel="tag"># 内存取证</a>
+              <a href="/tags/volatility/" rel="tag"># volatility</a>
+              <a href="/tags/misc/" rel="tag"># misc</a>
+          </div>
+
+        
+
     </footer>
   </article>
 </div>
+
 
 
 

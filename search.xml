@@ -1,32 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2024/03/22/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+    <title>volatility内存取证工具的学习和使用</title>
+    <url>/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>  我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题</p>
+<p>volatility下载地址：<a href="https://github.com/volatilityfoundation/volatility">https://github.com/volatilityfoundation/volatility</a></p>
+<p>本文使用的版本非volatility3版本，而是老版本，需要python2运行</p>
+<h4 id="例题："><a href="#例题：" class="headerlink" title="例题："></a>例题：</h4><p>选自 [陇剑杯 2021]内存分析：</p>
+<p>1.网管小王制作了一个虚拟机文件，让您来分析后作答：<br> 虚拟机的密码是_____________。</p>
+<p>首先，我们下载附件之后，看到压缩包里有一个vmem格式的文件</p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/1.png"></p>
+<blockquote>
+<p>Tip:什么是VMEM格式的文件？</p>
+<p>  VMEM格式的文件通常与虚拟机有关。VMEM文件是VMware虚拟机使用的分页或交换文件，用来备份主内存文件（以.VMX后缀的文件）中的数据，在虚拟机电源被关闭时使用。当虚拟机正在运行而主机的物理内存不足以支持它时，系统会将一部分虚拟机内存数据存储到VMEM文件中。 这个文件通过存储虚拟机的物理RAM内容，可以在虚拟机启动时提供状态恢复功能。如果您需要处理此类文件，通常是因为您正在管理虚拟机或者需要分析虚拟机的运行状态。 在某些情况下，如果虚拟机没有正常关闭，例如突然断电，VMEM文件就可以用来恢复虚拟机运行前的状态。然而，由于这些文件可能非常大，并且包含了大量的数据，所以通常不会被移动或编辑。 正常的虚拟机操作不需要用户直接与VMEM文件交互。</p>
+</blockquote>
+<p>我们这时就需要用到volatility工具分析这个vmem格式的文件，将其拖入kali linux 虚拟机中，我们可以使用</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python2 vol<span class="selector-class">.py</span> -f Target<span class="selector-class">.vmem</span> imageinfo</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/2.png"></p>
+<p>来查看Target.vmem文件的镜像信息，这里的-f 指的是 file ，用于指定文件，imageinfo是查看镜像文件的信息，imageinfo在内存取证中一般都是经常使用的</p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/3.png"></p>
+<p>这里的profile给出了一堆操作系统的名称，这是volatility工具预测的该我文件可能的操作系统版本，如果你能确定是哪个就选择哪个，否则可能需要挨个尝试，我们直接选择第一个尝试</p>
+<p>我们通过命令</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python2 vol<span class="selector-class">.py</span> -f Target<span class="selector-class">.vmem</span> <span class="attr">--profile</span> Win7SP1x64 lsadump</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<blockquote>
+<p>lsadump 插件用于提取的LSA（本地安全权限）密钥信息包括几个敏感部分，如：</p>
+<ul>
+<li><strong>SAM (安全账户管理器) 哈希</strong>: 这是存储本地账户密码哈希的地方。在系统不加密这些密码的情况下（例如在未启用系统加密的老旧系统中），这些哈希可以被破解以还原出用户的明文密码。</li>
+<li><strong>LSA Secrets</strong>: Windows系统用来存储各种系统级别的敏感信息的加密库，比如服务账号密码、系统加密密钥等。这可以包括用于自动登录功能的账户密码等。</li>
+<li><strong>缓存的域验证信息</strong>: 当用户登录到域控制器时，系统会缓存一份密码验证信息供以后使用，这在用户无法连接到域控制器时仍允许其登录。</li>
+</ul>
+</blockquote>
+<p>来提取和密码有关的信息，提取密码这样的敏感信息我们可以使用lsadump插件</p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/4.png"></p>
+<p>于是我们得到了flag</p>
+<p>可以使用python脚本提取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">flag_str = <span class="string">&quot;f.l.a.g.&#123;.W.3.1. C.0.M.3...T.0... T.H.i.S...3.4.S. Y...F.0.R.3.N.S. i.C.X.&#125;&quot;</span></span><br><span class="line">filteres_flag = <span class="string">&quot;&quot;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> (i&lt;<span class="built_in">len</span>(flag_str)):</span><br><span class="line">    <span class="keyword">if</span> flag_str[i:i+<span class="number">3</span>] == <span class="string">&quot;...&quot;</span>:</span><br><span class="line">        filteres_flag += <span class="string">&quot; &quot;</span></span><br><span class="line">        i+=<span class="number">3</span></span><br><span class="line">    <span class="keyword">elif</span> flag_str[i] <span class="keyword">in</span> [<span class="string">&#x27;.&#x27;</span>,<span class="string">&#x27; &#x27;</span>]:</span><br><span class="line">        filteres_flag += <span class="string">&#x27;&#x27;</span></span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        filteres_flag+=flag_str[i]</span><br><span class="line">        i+=<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(filteres_flag)</span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li></li>
+</ol>
+<p>网管小王制作了一个虚拟机文件，让您来分析后作答：<br> 虚拟机中有一个某品牌手机的备份文件，文件里的图片里的字符串为_____________。（解题过程中需要用到上一题答案中flag{}内的内容进行处理。)</p>
+<p>我们还是采用volatility进行分析</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">python2 vol.<span class="keyword">py</span> -<span class="keyword">f</span> Target.vmem --<span class="keyword">profile</span> Win7SP1x64 filescan | <span class="keyword">grep</span> <span class="string">&quot;Desktop&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p><code>filescan</code> 是Volatility框架中的一个插件，它用于扫描整个物理内存的转储，以搜索Windows文件对象。这个插件会检索表示打开文件的_FILE_OBJECT结构的列表，并提供关于这些文件的详细信息，例如文件的名称、文件的大小、文件的位置以及关联的文件句柄等。</p>
+<p><code>filescan</code> 插件非常有用，因为即便是已经被删除的文件，只要它们的文件对象仍然存在于内存中，这个插件依然能够检索到这些文件的信息。这对于取证分析来说是非常重要的，因为它可以揭示系统在某一特定时间点的文件活动情况。</p>
+</blockquote>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/5.png"></p>
+<p>我们发现了有华为手机品牌的名字，接着我们尝试提取它</p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/6.png"></p>
+<p>提取</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python2 vol<span class="selector-class">.py</span> -f Target<span class="selector-class">.vmem</span> <span class="attr">--profile</span> Win7SP1x64 dumpfiles -Q <span class="number">0</span>x000000007d8c7d10 -D./</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>-Q后面跟的是偏移量</p>
+<p>参数 <code>-D</code> 后面跟随的 <code>./</code> 表示当前目录，也就是说，此命令将会把提取的文件保存在你正在执行这个Volatility命令时所在的目录。通常在一个 Linux 或类 Unix 系统中，<code>.</code> 表示当前目录，而 <code>/</code> 是路径分隔符</p>
+</blockquote>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/7.png"></p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/8.png"></p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/9.png"></p>
+<p>再使用binwalk分离，注意要加上–run-as&#x3D;root</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line">binwalk -<span class="keyword">e</span> <span class="keyword">file</span>.None.0xfffffa80037e0af0.dat --<span class="keyword">run</span>-<span class="keyword">as</span>=root</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/10.png"></p>
+<p>提取后得到了一个压缩包文件，但是unzip解压不了，给给权限后图形界面解压，得到是华为的文件</p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/11.png"></p>
+<p>这可能是一个华为手机的备份文件，我们使用华为备份工具kobackupdec恢复</p>
+<p>kobackupdec：<a href="https://github.com/UltraUser/kobackupdec">https://github.com/UltraUser/kobackupdec</a></p>
+<p>输入命令，”W31C0M3_T0_THiS_34SY_F0R3NSiCX“这个是上题的flag，题目说有用，其实就是在这里当作密码</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">python3</span> kobackupdec.<span class="keyword">py</span> -vvv W31C0M3_T0_THiS_34SY_F0R3NSiCX <span class="string">&quot;/home/kali/volatility-master/_file.None.0xfffffa80037e0af0.dat-0.extracted/HUAWEI P40_2021-aa-bb xx.yy.zz&quot;</span> ./backup</span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">──(kali㉿kali)-[~<span class="regexp">/volatility-master/</span>_file.<span class="title class_">None</span>.<span class="number">0xfffffa80037e0af0</span>.dat-<span class="number">0</span>.extracted/kobackupdec-master]</span><br><span class="line">└─<span class="variable">$ </span>python3 kobackupdec.py -vvv <span class="title class_">W31C0M3</span>_T0_THiS_34SY_F0R3NSiCX <span class="string">&quot;/home/kali/volatility-master/_file.None.0xfffffa80037e0af0.dat-0.extracted/HUAWEI P40_2021-aa-bb xx.yy.zz&quot;</span> ./backup</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:searching</span> backup <span class="keyword">in</span> [<span class="regexp">/home/kali</span><span class="regexp">/volatility-master/</span>_file.<span class="title class_">None</span>.<span class="number">0xfffffa80037e0af0</span>.dat-<span class="number">0</span>.extracted/<span class="variable constant_">HUAWEI</span> <span class="variable constant_">P40_2021</span>-aa-bb xx.yy.zz]</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:got</span> info.xml, going to decrypt backup files</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:Parsing</span> file /home/kali/volatility-master/_file.<span class="title class_">None</span>.<span class="number">0xfffffa80037e0af0</span>.dat-<span class="number">0</span>.extracted/<span class="variable constant_">HUAWEI</span> <span class="variable constant_">P40_2021</span>-aa-bb xx.yy.zz/info.xml</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:Ignoring</span> <span class="title class_">HeaderInfo</span> entry.</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:Ignoring</span> <span class="title class_">BackupFilePhoneInfo</span> entry</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:Ignoring</span> <span class="title class_">BackupFileVersionInfo</span> entry</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:Parsing</span> <span class="title class_">BackupFilesTypeInfo</span></span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:crypto_init</span>: using version <span class="number">3</span>.</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:SHA256</span>(<span class="variable constant_">BKEY</span>)[<span class="number">16</span>] = b<span class="string">&#x27;b42ec8a3ef141e7af8f32ddd74c08cd2&#x27;</span></span><br><span class="line"><span class="variable constant_">WARNING</span><span class="symbol">:root</span><span class="symbol">:Empty</span> <span class="title class_">CheckMsg</span>! <span class="title class_">Cannot</span> check backup password!</span><br><span class="line"><span class="variable constant_">WARNING</span><span class="symbol">:root</span><span class="symbol">:Assuming</span> the provided password is correct...</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:parsing</span> xml file picture.xml</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:DecryptInfo</span> dump ---</span><br><span class="line"><span class="symbol">password:</span>b<span class="string">&#x27;W31C0M3_T0_THiS_34SY_F0R3NSiCX&#x27;</span>, <span class="symbol">good:</span><span class="title class_">True</span>, has <span class="symbol">media:</span><span class="title class_">False</span>, file <span class="symbol">info:</span><span class="number">1</span>, media <span class="symbol">info:</span><span class="number">0</span>, multimedia <span class="symbol">file:</span><span class="number">1</span>, system data <span class="symbol">info:</span><span class="number">0</span>, system folder data <span class="symbol">info:</span><span class="number">0</span></span><br><span class="line"><span class="variable constant_">DUMPING</span> <span class="variable constant_">FILE</span> <span class="variable constant_">INFO</span> <span class="variable constant_">ITEMS</span></span><br><span class="line"><span class="variable constant_">NAME</span>: alarm, <span class="variable constant_">TYPE</span>: <span class="title class_">BackupFileModuleInfo</span>, </span><br><span class="line"><span class="variable constant_">DUMPING</span> <span class="variable constant_">MEDIA</span> <span class="variable constant_">INFO</span> <span class="variable constant_">ITEMS</span></span><br><span class="line"><span class="variable constant_">DUMPING</span> <span class="variable constant_">MULTIMEDIA</span> <span class="variable constant_">FILE</span> <span class="variable constant_">ITEMS</span></span><br><span class="line"><span class="variable constant_">NAME</span>: <span class="title class_">None</span>, <span class="variable constant_">TYPE</span>: <span class="title class_">Multimedia</span>, <span class="variable constant_">PATH</span>: storage/<span class="title class_">MediaTar</span>/images/images0.tar, </span><br><span class="line"><span class="variable constant_">DUMPING</span> <span class="variable constant_">SYSTEM</span> <span class="variable constant_">DATA</span> <span class="variable constant_">INFO</span> <span class="variable constant_">ITEMS</span></span><br><span class="line"><span class="variable constant_">DUMPING</span> <span class="variable constant_">SYSTEM</span> <span class="variable constant_">DATA</span> <span class="variable constant_">FOLDER</span> <span class="variable constant_">INFO</span> <span class="variable constant_">ITEMSINFO</span><span class="symbol">:root</span><span class="symbol">:working</span> on alarm.db</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:searching</span> key [alarm] of info_type.<span class="variable constant_">SYSTEM_DATA</span></span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:unable</span> to get [alarm], trying on all types</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:decrypt</span> info  [alarm] found</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:working</span> on [images0.tar.enc]</span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:searching</span> key [storage/<span class="title class_">MediaTar</span>/images/images0.tar] of info_type.<span class="variable constant_">MULTIMEDIA</span></span><br><span class="line"><span class="variable constant_">DEBUG</span><span class="symbol">:root</span><span class="symbol">:decrypt</span> info  [storage/<span class="title class_">MediaTar</span>/images/images0.tar] found</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:No</span> media folder found.</span><br><span class="line"><span class="variable constant_">INFO</span><span class="symbol">:root</span><span class="symbol">:setting</span> all decrypted files to read-only</span><br></pre></td></tr></table></figure>
+
+<p>查看提取到的文件，发现了flag照片</p>
+<p><img src="/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/12.png"></p>
+<h4 id="新发现："><a href="#新发现：" class="headerlink" title="新发现："></a>新发现：</h4><ol>
+<li>才发现unzip命令不能解压tar文件</li>
+<li>tar压缩文件可以使用 tar -xzf filename.tar来解压</li>
+</ol>
+<blockquote>
+<p>在Linux系统中，使用<code>tar</code>命令来解压缩文件非常常见。<code>tar</code>是一种归档打包工具，可以将多个文件和目录打包成一个<code>.tar</code>文件。它还可以与压缩工具结合使用，比如gzip或bzip2，来减小归档文件的大小。 解压tar文件的基本命令是：</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">tar -xvf <span class="built_in">file</span>.tar</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><code>-x</code> 表示解压缩（extract）。</li>
+<li><code>-v</code> 表示显示详细过程（verbose）。</li>
+<li><code>-f</code> 表示指定文件名（file）。</li>
+</ul>
+<p>如果tar文件还经过gzip压缩（文件扩展名通常为<code>.tar.gz</code>或<code>.tgz</code>），可以使用：</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">tar -zxvf <span class="built_in">file</span>.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><code>-z</code> 选项会告知tar命令要调用gzip来进行解压。</li>
+</ul>
+<p>如果tar文件是使用bzip2压缩的（文件扩展名为<code>.tar.bz2</code>），可以这样操作：</p>
+<figure class="highlight applescript"><table><tr><td class="code"><pre><span class="line">tar -jxvf <span class="built_in">file</span>.tar.bz2</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><code>-j</code> 选项指定tar命令调用bzip2进行解压。</li>
+</ul>
+<p>要记住的关键是，解压tar文件的话，就添加<code>-x</code>参数；如果tar文件还经过了压缩，那么就根据压缩类型添加相应的参数（gzip是<code>-z</code>，bzip2是<code>-j</code>）。对于<code>.xz</code>使用<code>-J</code>，对于<code>.tar.zst</code>使用<code>--zstd</code>选项。 </p>
+</blockquote>
 ]]></content>
-  </entry>
-  <entry>
-    <title>测试文章</title>
-    <url>/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
-    <content><![CDATA[<p>这是一篇测试文章</p>
-<img src="/2024/03/22/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png" class="">
-
-]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
       <tags>
-        <tag>原创</tag>
+        <tag>内存取证</tag>
+        <tag>volatility</tag>
+        <tag>misc</tag>
       </tags>
   </entry>
 </search>
