@@ -126,7 +126,7 @@
       <tags>
         <tag>内存取证</tag>
         <tag>volatility</tag>
-        <tag>misc</tag>
+        <tag>MISC</tag>
       </tags>
   </entry>
   <entry>
@@ -139,6 +139,162 @@
       </categories>
       <tags>
         <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据隐藏的学习笔记</title>
+    <url>/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>最近刚看完了Michael Raggo的《数据隐藏技术解密》这本书，书中有些内容值得做一些笔记</p>
+<h4 id="1-Word中的数据隐藏"><a href="#1-Word中的数据隐藏" class="headerlink" title="1.Word中的数据隐藏"></a>1.Word中的数据隐藏</h4><p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1.png"></p>
+<p>右键单击，选择”字体”，勾选“隐藏”复选框即可隐藏文字</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/2.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/3.png"></p>
+<p>我们可以在Word的文件-&gt;选项-&gt;勾选“隐藏文字”复选框，或者“打印隐藏文字”完成隐藏内容的显示</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/4.png"></p>
+<p>另外一个识别隐藏文字的方法是使用检查文档选项，在文件-&gt;信息-&gt;检查文档中，可以检查隐藏元数据，例如作者，批注和可识别的其他信息</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/5.png"></p>
+<p>在Word的属性区域还有很多可以隐藏信息的选项</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6.png"></p>
+<h4 id="2-在PDF文件中隐藏信息"><a href="#2-在PDF文件中隐藏信息" class="headerlink" title="2.在PDF文件中隐藏信息"></a>2.在PDF文件中隐藏信息</h4><p>wbStego4open：<a href="http://www.bailer.at/wbstego/pr_4ixopen.htm">http://www.bailer.at/wbstego/pr_4ixopen.htm</a></p>
+<p>可以使用wbStego4open工具在PDF文件中隐藏版权信息，文件等，同时还可以设置密码,操作简单，按软件提示做就可以</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/7.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/8.png"></p>
+<blockquote>
+<p>工具原理：</p>
+<ol>
+<li>将插入数据的每一个ASCII码转换为二进制格式</li>
+<li>根据20代表0，09代表1，进行替换</li>
+<li>最后将这些20 09序列嵌入PDF文件</li>
+</ol>
+</blockquote>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/9.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10.png"></p>
+<p>原理如图：</p>
+<p><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi-osMdLzjQD8Wl-7sPz0BqxJu-6HpvT8_gQ&s" alt="2.1）【隐写技术】数据的隐藏方法、PDF、可执行 ..."></p>
+<span id="more"></span>
+
+<h4 id="3-在可执行文件中隐藏信息"><a href="#3-在可执行文件中隐藏信息" class="headerlink" title="3.在可执行文件中隐藏信息"></a>3.在可执行文件中隐藏信息</h4><p>Hydan：<a href="http://justsolve.archiveteam.org/wiki/Hydan">http://justsolve.archiveteam.org/wiki/Hydan</a></p>
+<p>由于Hydan太老了(2004年)，目前的环境没有办法正常运行（不过你也可以自己配置一下以前的环境试试），于是我没有使用书上说的Hydan，选择了steg86</p>
+<p>steg86: <a href="https://github.com/woodruffw/steg86">https://github.com/woodruffw/steg86</a></p>
+<p>安装好steg86后，运行</p>
+<p>可以使用profile查看一下这个二进制文件隐写适用性</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─# steg86 --<span class="keyword">help</span></span><br><span class="line">A tool <span class="keyword">for</span> hiding <span class="keyword">messages</span> in x86(_64) binaries</span><br><span class="line"></span><br><span class="line">Usage: steg86 <span class="symbol">&lt;COMMAND&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  <span class="keyword">profile</span>  <span class="keyword">profile</span> <span class="keyword">a</span> binary <span class="keyword">for</span> steganographic storage capacity</span><br><span class="line">  embed    embed some data into <span class="keyword">a</span> binary steganographically</span><br><span class="line">  extract  extract the hidden data from <span class="keyword">a</span> binary</span><br><span class="line">  <span class="keyword">help</span>     <span class="keyword">Print</span> this message <span class="built_in">or</span> the <span class="keyword">help</span> of the given subcommand(s)</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">  -h, --<span class="keyword">help</span>     <span class="keyword">Print</span> <span class="keyword">help</span></span><br><span class="line">  -V, --<span class="keyword">version</span>  <span class="keyword">Print</span> <span class="keyword">version</span></span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─# steg86 <span class="keyword">profile</span> bash </span><br><span class="line">Summary <span class="keyword">for</span> bash:</span><br><span class="line">        <span class="number">195934</span> total instructions</span><br><span class="line">        <span class="number">31655</span> potential semantic pairs</span><br><span class="line">        <span class="number">39</span> potential commutative instructions</span><br><span class="line">        <span class="number">31662</span> bits of information capacity (<span class="number">3957</span> bytes, approx. <span class="number">3</span>KB)</span><br></pre></td></tr></table></figure>
+
+<p>嵌入信息，运行命令得到了bash.steg可执行文件</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">steg86 embed <span class="keyword">bash </span><span class="keyword">bash.steg </span>&lt;&lt;&lt; <span class="string">&quot;The hidden message&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>提取消息</p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-<span class="selector-attr">[/home/kali]</span></span><br><span class="line">└─# steg86 extract bash<span class="selector-class">.steg</span> &gt; my_message</span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-<span class="selector-attr">[/home/kali]</span></span><br><span class="line">└─# cat my_message                                                                                                                </span><br><span class="line">The hidden message</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="4-在HTML文件中隐藏信息"><a href="#4-在HTML文件中隐藏信息" class="headerlink" title="4.在HTML文件中隐藏信息"></a>4.在HTML文件中隐藏信息</h4><p>Snow: <a href="https://darkside.com.au/snow/">https://darkside.com.au/snow/</a>   </p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/11.png"></p>
+<p>对比原始的HTML文件和嵌入数据的文件，视觉上没有任何差别</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/12.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/13.png"></p>
+<p>实际上我们用010编辑器打开可以看到文件发生了一些细微的变化（发现这个隐写方式和wbStego4open非常相似）</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/14.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/15.png"></p>
+<h4 id="5-免费的隐写分析软件"><a href="#5-免费的隐写分析软件" class="headerlink" title="5.免费的隐写分析软件"></a>5.免费的隐写分析软件</h4><h5 id="1-StegSpy"><a href="#1-StegSpy" class="headerlink" title="1.StegSpy"></a>1.StegSpy</h5><p>StegSpy是一款著名的检测隐藏信息的签名分析软件，为什么它可以分析，是因为很多隐写程序都有一个共同特性，就是它们还会在文件中嵌入它们自己的唯一标识，比如Hiderman，会在载体文件的尾部追加“CDN”这三个ASCII码。于是可以创建一个签名库，搜集市面上大多数隐写软件的唯一标识，即可进行隐写分析。</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/16.png"></p>
+<blockquote>
+<p>Tip: 如果发现运行StegSpy报错“组件COMDLG32.OCX或其依赖项之一未正确注册：文件丢失或无效”：</p>
+<ol>
+<li><p>去网上找一个大型网站下载 COMDLG32.OCX</p>
+</li>
+<li><p>32位系统：将COMDLG32.OCX复制到C:\windows\system32\ 目录下，运行</p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line">regsvr32 c:<span class="string">\Windows\system32\comdlg32.ocx</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>64位系统：将COMDLG32.OCX复制到C:\Windows\SysWOW64\ 目录下，运行</p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line">regsvr32 c:<span class="string">\Windows\SysWOW64\comdlg32.ocx</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</blockquote>
+<h5 id="2-Stegdetect"><a href="#2-Stegdetect" class="headerlink" title="2.Stegdetect"></a>2.Stegdetect</h5><p>Stegdetect: <a href="https://www.provos.org/p/outguess-and-stegdetect-downloads">https://www.provos.org/p/outguess-and-stegdetect-downloads</a></p>
+<p>原理：JPEG和MPEG文件格式使用的是离散余弦变换（DTC）函数来压缩图像，对于这种压缩方法，通过识别每个8x8像素块中相邻像素中的重复像素来减少图像大小，因此DCT是一个有损压缩技术，但是一般不会影响图像或者视频的视觉效果。Stegdetect是评估JPEG文件的DCT频率系数，把检测到的可疑JPEG文件频率与正常文件的频率对比，对比结果偏差很大则说明被检查文件有异常。（由于该原因，不能检测png文件）</p>
+<p>使用：</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/17.png"></p>
+<p>Stegdetect发现图像使用JPhide方法嵌入数据的，但是嵌入的可能性不同，后面的*越多可能性越大</p>
+<p>通过使用以下命令还可以递归检测当前目录下的jpg图像文件</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line">.\stegdetect.exe -s 10.0 *<span class="string">.jpg</span></span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>-s 是设置敏感度，可以设置为10.0</p>
+</blockquote>
+<blockquote>
+<p>Stegdetect 的主要选项：</p>
+<p>q – 仅显示可能包含隐藏内容的图像</p>
+<p>n – 启用检查 JPEG 文件头功能，以降低误报率。</p>
+<p>s – 修改检测算法的敏感度，该值的默认值为 1。</p>
+<p>d – 打印带行号的调试信息。</p>
+<p><strong>t – 设置要检测哪些隐写工具（默认检测 jopi）</strong>，可设置的选项如下：</p>
+<p>j – 检测图像中的信息是否是用 jsteg 嵌入的。</p>
+<p>p – 检测图像中的信息是否是用 jphide 嵌入的。</p>
+<p>o – 检测图像中的信息是否是用 outguess 嵌入的。</p>
+<p>i – 检测图像中的信息是否是用 invisible secrets 嵌入的。</p>
+</blockquote>
+<h4 id="6-Windows中的数据隐藏"><a href="#6-Windows中的数据隐藏" class="headerlink" title="6.Windows中的数据隐藏"></a>6.Windows中的数据隐藏</h4><h5 id="1-交换数据流隐藏数据"><a href="#1-交换数据流隐藏数据" class="headerlink" title="1.交换数据流隐藏数据"></a>1.交换数据流隐藏数据</h5><p>Windows NTFS文件系统的交换数据流（ADS）一直为众人所知，它可以追朔到Windows NT3.1，NTFS使用交换数据流来存储文件的相关元数据，包括安全信息，原作者，其他数据。</p>
+<p>我们使用powershell创建一个txt文件</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/18.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/19.png"></p>
+<p>我们用原始文本文件(lontano.txt)创建我们的交换数据流</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/20.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/21.png"></p>
+<p>常用的浏览技术对交换数据流都是免疫的，执行完上面命令后，文件大小也没有什么变化</p>
+<p>统一文件创建的交换数据流不止一个</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">notepad</span> lontano.txt:hide2.txt</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-卷影技术"><a href="#2-卷影技术" class="headerlink" title="2.卷影技术"></a>2.卷影技术</h5><p>新版本的Windows系统都有卷影副本服务，可以备份磁盘卷，以便在安装新的软件、设备驱动器或者其他程序导致系统崩溃时可以还原系统。</p>
+<p>我们可以右键此电脑-&gt;属性-&gt;系统保护-&gt;配置中设置卷影副本分配的最大空间</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/22.png"></p>
+<p>由于很多防病毒软件都不会扫描卷影副本，所以一般认为这里是隐藏数据和恶意软件的好地方</p>
+<p>在windows7以上系统中，管理员用户可以在命令行用VSSadmin来管理卷影副本：</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/23.png"></p>
+<p>通过”List shadowstorage”可以查看卷影副本的存储关联（存储空间大小）</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/24.png"></p>
+<p>接下来，我们就可以在卷影副本中创建并隐藏文件了，还会演示脱离文件系统访问这个文件</p>
+<p>我们在sandbox文件夹下面放了一个待隐藏的pdf文件</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/25.png"></p>
+<p>还是在系统保护中创建还原点</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/26.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/27.png"></p>
+<p>可以使用命令来查看卷影副本清单</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">vssadmin list shadows</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/28.png"></p>
+<p>接着我们可以删除那份待隐藏的PDF文件，然后创建符号链接来查看卷影副本的内容，本例中，新卷影副本的名称是“\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy2\”，执行带有&#x2F;D选项的mklink命令，为符号链接创建目录，注意mklink命令使用cmd运行，如果用powershell会报错，卷影副本的名称后面一定有 \ ，这是创建符号链接必备的</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line">mklink /D hiddendir \\<span class="string">?\G</span>LOBALROOT\<span class="title class_">Device</span>\<span class="title class_">HarddiskVolumeShadowCopy2</span>\ </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/29.png"></p>
+<p>进入hiddendir目录，可以看到我们之前已经删除的PDF文件</p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/30.png"></p>
+<p><img src="/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/31.png"></p>
+<p>如果隐藏的是可执行文件，可以通过WMIC运行这个可执行文件，这里就不尝试了，有兴趣的小伙伴可以上网查询或看书</p>
+<h4 id="7-Linux中的数据隐藏"><a href="#7-Linux中的数据隐藏" class="headerlink" title="7.Linux中的数据隐藏"></a>7.Linux中的数据隐藏</h4><h5 id="1-Linux文件名欺骗"><a href="#1-Linux文件名欺骗" class="headerlink" title="1.Linux文件名欺骗"></a>1.Linux文件名欺骗</h5><p>总所周知，在文件名前面加上”.”符号可以隐藏该文件，当我们执行ls命令的时候看不到这个文件，但是当我们执行”ls -al”的时候，就原形毕露了</p>
+<figure class="highlight tap"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─<span class="comment"># ls -al                                                                                                                        </span></span><br><span class="line">total 147068</span><br><span class="line">drwx------<span class="number"> 30 </span>kali kali     <span class="number"> 4096 </span>Mar<span class="number"> 29 </span>19:10 .</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root     <span class="number"> 4096 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span>..</span><br><span class="line">-rwxr-xr-x <span class="number"> 1 </span>root root  <span class="number"> 1277936 </span>Mar<span class="number"> 29 </span>14:10 bash</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>kali kali      <span class="number"> 220 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span>.bash_logout</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>kali kali     <span class="number"> 5551 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span>.bashrc</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>kali kali     <span class="number"> 3526 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span>.bashrc.original</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>root root  <span class="number"> 1277936 </span>Mar<span class="number"> 29 </span>19:08 bash.steg</span><br></pre></td></tr></table></figure>
+
+<p>我们运行“ls -al”的时候，可以发现结果还有一个单点和一个双点符号，单点表示当前目录，双点表示上级目录，比较有趣的是，在点后面加上空格还可以创建新的目录，比如“. ”</p>
+<figure class="highlight tap"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─<span class="comment"># mkdir    &quot;. &quot;                                                                                                                 </span></span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─<span class="comment"># ls -al                                                                                                                        </span></span><br><span class="line">total 147072</span><br><span class="line">drwx------<span class="number"> 31 </span>kali kali     <span class="number"> 4096 </span>Mar<span class="number"> 29 </span>22:00  .</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>root root     <span class="number"> 4096 </span>Mar<span class="number"> 29 </span>22:00 &#x27;. &#x27;</span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root     <span class="number"> 4096 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span> ..</span><br><span class="line">-rwxr-xr-x <span class="number"> 1 </span>root root  <span class="number"> 1277936 </span>Mar<span class="number"> 29 </span>14:10  bash</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>kali kali      <span class="number"> 220 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span> .bash_logout</span><br></pre></td></tr></table></figure>
+
+<p>这里和书上不一样，估计是这个漏洞已经被官方修复了，按照书上的结果，应该是这样的，但是”. “这样也看起来很有隐蔽性</p>
+<figure class="highlight tap"><table><tr><td class="code"><pre><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─<span class="comment"># mkdir    &quot;. &quot;                                                                                                                 </span></span><br><span class="line"></span><br><span class="line">┌──(root㉿kali)-[/home/kali]</span><br><span class="line">└─<span class="comment"># ls -al                                                                                                                        </span></span><br><span class="line">total 147072</span><br><span class="line">drwx------<span class="number"> 31 </span>kali kali     <span class="number"> 4096 </span>Mar<span class="number"> 29 </span>22:00  .</span><br><span class="line">drwxr-xr-x <span class="number"> 2 </span>root root     <span class="number"> 4096 </span>Mar<span class="number"> 29 </span>22:00  . </span><br><span class="line">drwxr-xr-x <span class="number"> 3 </span>root root     <span class="number"> 4096 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span> ..</span><br><span class="line">-rwxr-xr-x <span class="number"> 1 </span>root root  <span class="number"> 1277936 </span>Mar<span class="number"> 29 </span>14:10  bash</span><br><span class="line">-rw-r--r-- <span class="number"> 1 </span>kali kali      <span class="number"> 220 </span>Aug<span class="number"> 22 </span><span class="number"> 2023 </span> .bash_logout</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-总结"><a href="#8-总结" class="headerlink" title="8.总结"></a>8.总结</h4><p>关于本书的笔记还未完结，后续我会发布 “数据隐藏的学习笔记（二）“ ，后续内容会涉及更多Linux系统的数据隐藏，虚拟机中的数据隐藏和网络协议中的数据隐藏，最后还会总结一下电子取证的流程，策略。待所有更新完后，我会将它们整合在一起！😊</p>
+<p>这里推荐这本书，内容不是很深奥，通俗易懂，是学习取证的好书！</p>
+<p><img src="https://img9.doubanio.com/view/subject/s/public/s27229405.jpg" alt="数据隐藏技术揭秘"></p>
+]]></content>
+      <categories>
+        <category>网络安全</category>
+      </categories>
+      <tags>
+        <tag>MISC</tag>
+        <tag>网络安全</tag>
+        <tag>数据隐藏</tag>
+        <tag>取证</tag>
       </tags>
   </entry>
 </search>

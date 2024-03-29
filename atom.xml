@@ -6,7 +6,7 @@
   <link href="https://wtzabc123.github.io/atom.xml" rel="self"/>
   
   <link href="https://wtzabc123.github.io/"/>
-  <updated>2024-03-24T14:02:53.108Z</updated>
+  <updated>2024-03-29T14:27:16.334Z</updated>
   <id>https://wtzabc123.github.io/</id>
   
   <author>
@@ -17,11 +17,62 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>数据隐藏的学习笔记</title>
+    <link href="https://wtzabc123.github.io/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    <id>https://wtzabc123.github.io/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</id>
+    <published>2024-03-29T02:21:15.000Z</published>
+    <updated>2024-03-29T14:27:16.334Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最近刚看完了Michael Raggo的《数据隐藏技术解密》这本书，书中有些内容值得做一些笔记&lt;/p&gt;
+&lt;h4 id=&quot;1-Word中的数据隐藏&quot;&gt;&lt;a href=&quot;#1-Word中的数据隐藏&quot; class=&quot;headerlink&quot; title=&quot;1.Word中的数据隐藏&quot;&gt;&lt;/a&gt;1.Word中的数据隐藏&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;右键单击，选择”字体”，勾选“隐藏”复选框即可隐藏文字&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/2.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/3.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;我们可以在Word的文件-&amp;gt;选项-&amp;gt;勾选“隐藏文字”复选框，或者“打印隐藏文字”完成隐藏内容的显示&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/4.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;另外一个识别隐藏文字的方法是使用检查文档选项，在文件-&amp;gt;信息-&amp;gt;检查文档中，可以检查隐藏元数据，例如作者，批注和可识别的其他信息&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/5.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;在Word的属性区域还有很多可以隐藏信息的选项&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/6.png&quot;&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-在PDF文件中隐藏信息&quot;&gt;&lt;a href=&quot;#2-在PDF文件中隐藏信息&quot; class=&quot;headerlink&quot; title=&quot;2.在PDF文件中隐藏信息&quot;&gt;&lt;/a&gt;2.在PDF文件中隐藏信息&lt;/h4&gt;&lt;p&gt;wbStego4open：&lt;a href=&quot;http://www.bailer.at/wbstego/pr_4ixopen.htm&quot;&gt;http://www.bailer.at/wbstego/pr_4ixopen.htm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;可以使用wbStego4open工具在PDF文件中隐藏版权信息，文件等，同时还可以设置密码,操作简单，按软件提示做就可以&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/7.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/8.png&quot;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;工具原理：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;将插入数据的每一个ASCII码转换为二进制格式&lt;/li&gt;
+&lt;li&gt;根据20代表0，09代表1，进行替换&lt;/li&gt;
+&lt;li&gt;最后将这些20 09序列嵌入PDF文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/9.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2024/03/29/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/10.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;原理如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi-osMdLzjQD8Wl-7sPz0BqxJu-6HpvT8_gQ&amp;s&quot; alt=&quot;2.1）【隐写技术】数据的隐藏方法、PDF、可执行 ...&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="网络安全" scheme="https://wtzabc123.github.io/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/"/>
+    
+    
+    <category term="MISC" scheme="https://wtzabc123.github.io/tags/MISC/"/>
+    
+    <category term="网络安全" scheme="https://wtzabc123.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/"/>
+    
+    <category term="数据隐藏" scheme="https://wtzabc123.github.io/tags/%E6%95%B0%E6%8D%AE%E9%9A%90%E8%97%8F/"/>
+    
+    <category term="取证" scheme="https://wtzabc123.github.io/tags/%E5%8F%96%E8%AF%81/"/>
+    
+  </entry>
+  
+  <entry>
     <title>volatility内存取证工具的学习和使用</title>
     <link href="https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
     <id>https://wtzabc123.github.io/2024/03/24/volatility%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%92%8C%E4%BD%BF%E7%94%A8/</id>
     <published>2024-03-24T11:21:23.000Z</published>
-    <updated>2024-03-24T14:02:53.108Z</updated>
+    <updated>2024-03-29T02:22:30.126Z</updated>
     
     
     <summary type="html">&lt;p&gt;  我最近正在学习misc的内存取证和日志分析，volalility是一个常用的内存取证分析工具，接下来我们一起来看看它的几个使用方法和典型CTF赛题&lt;/p&gt;
@@ -54,7 +105,7 @@
     
     <category term="volatility" scheme="https://wtzabc123.github.io/tags/volatility/"/>
     
-    <category term="misc" scheme="https://wtzabc123.github.io/tags/misc/"/>
+    <category term="MISC" scheme="https://wtzabc123.github.io/tags/MISC/"/>
     
   </entry>
   
